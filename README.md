@@ -27,3 +27,15 @@ GDrive Folder:
     - [FairTest: Discovering Unwarranted Associations in Data-Driven Applications](https://ieeexplore.ieee.org/document/7961993)
 
 
+
+
+adapters to test:
+- https://adapterhub.ml/explore/comsense/winogrande/
+
+- https://adapterhub.ml/explore/argument/ukpsent/
+- https://adapterhub.ml/explore/comsense/siqa/
+- https://adapterhub.ml/explore/lm/poem/
+- https://adapterhub.ml/explore/nli/cb/
+- https://adapterhub.ml/explore/nli/multinli/
+- https://adapterhub.ml/explore/pos/ldc2012t13/
+
