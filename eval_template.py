@@ -1,4 +1,4 @@
-path = "/content/drive/MyDrive/master_hpi/NLP_Project/code/"
+path = "/content/gdrive/MyDrive/master_hpi/NLP_Project/code/"
 
 ####################
 # Copied from StereoSet
@@ -50,7 +50,7 @@ nlp = spacy.load('en')
 class BiasEvaluator():
     def __init__(self, no_cuda=False, input_file=path+"dev.json", skip_intrasentence=False, 
                  skip_intersentence=False, batch_size=1, max_seq_length=128, output_dir=path+"output", 
-                 output_file=path+"output/predictions.json", load_path=path+"SentimentBert.pth"):
+                 output_file=path+"output/predictions.json", load_path="pretrained_models/SentimentBert.pth"):
         print(f"Loading {input_file}...")
         filename = os.path.abspath(input_file)
         self.dataloader = StereoSet(filename)
@@ -95,6 +95,7 @@ class BiasEvaluator():
         dataloader = DataLoader(
             dataset, batch_size=self.batch_size, shuffle=False, num_workers=5)
         num_labels = 2
+        print("Arrived 0")
 
         model = utils.BertForSequenceClassification(num_labels)
         device = torch.device("cuda" if not args.no_cuda else "cpu")
@@ -103,6 +104,7 @@ class BiasEvaluator():
         model.to(device).eval()
         if torch.cuda.device_count() > 1:
             print("Let's use", torch.cuda.device_count(), "GPUs!")
+        print("Arrived 1")
         # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
         model = nn.DataParallel(model)
         model.load_state_dict(torch.load(self.LOAD_PATH))
@@ -124,7 +126,6 @@ class BiasEvaluator():
 
         return bias_predictions
 
-
     def count_parameters(self, model):
         return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
@@ -132,15 +133,15 @@ class BiasEvaluator():
         print()
         print(
             f"{Fore.LIGHTBLUE_EX}Evaluating bias on intersentence tasks...{Style.RESET_ALL}")
-        dataset = SentimentIntersentenceDataset(self.tokenizer, self.input_file, self.batch_size, self.cuda, )
+        dataset = SentimentIntersentenceDataset(self.tokenizer, self.input_file, self.max_seq_length, self.batch_size)
         dataloader = DataLoader(
             dataset, batch_size=self.batch_size, shuffle=False, num_workers=5)
         num_labels = 2
 
+
         model = utils.BertForSequenceClassification(num_labels)
         device = torch.device("cuda" if not self.cuda else "cpu")
         print(f"Number of parameters: {self.count_parameters(model):,}")
-
         model.to(device).eval()
         if torch.cuda.device_count() > 1:
             print("Let's use", torch.cuda.device_count(), "GPUs!")
