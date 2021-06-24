@@ -15,7 +15,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from transformers import BertForMaskedLM, BertModel, BertTokenizer, BertForSequenceClassification 
+from transformers import  BertForSequenceClassification, BertTokenizer  # ,BertForMaskedLM, BertModel, 
 from colorama import Fore, Style, init
 
 from intersentence_loader import SentimentIntersentenceDataset  
@@ -50,7 +50,7 @@ nlp = spacy.load('en')
 class BiasEvaluator():
     def __init__(self, no_cuda=False, input_file=path+"dev.json", skip_intrasentence=False, 
                  skip_intersentence=False, batch_size=1, max_seq_length=128, output_dir=path+"output", 
-                 output_file=path+"output/predictions.json", load_path="pretrained_models/SentimentBert.pth"):
+                 output_file=path+"output/predictions.json", load_path=path + "SentimentBert.pth"):
         print(f"Loading {input_file}...")
         filename = os.path.abspath(input_file)
         self.dataloader = StereoSet(filename)
@@ -98,16 +98,18 @@ class BiasEvaluator():
         print("Arrived 0")
 
         model = utils.BertForSequenceClassification(num_labels)
-        device = torch.device("cuda" if not args.no_cuda else "cpu")
+        #device = torch.device("cuda" if not args.no_cuda else "cpu")
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Number of parameters: {self.count_parameters(model):,}")
 
         model.to(device).eval()
         if torch.cuda.device_count() > 1:
             print("Let's use", torch.cuda.device_count(), "GPUs!")
-        print("Arrived 1")
-        # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+            print("Arrived 1")
+            # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
         model = nn.DataParallel(model)
-        model.load_state_dict(torch.load(self.LOAD_PATH))
+        print(torch.load(self.LOAD_PATH).keys())
+        model.load_state_dict(torch.load(self.LOAD_PATH), strict=False)
         self.model = model
 
         
@@ -140,14 +142,16 @@ class BiasEvaluator():
 
 
         model = utils.BertForSequenceClassification(num_labels)
-        device = torch.device("cuda" if not self.cuda else "cpu")
+        #device = torch.device("cuda" if not self.cuda else "cpu")
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Number of parameters: {self.count_parameters(model):,}")
         model.to(device).eval()
         if torch.cuda.device_count() > 1:
             print("Let's use", torch.cuda.device_count(), "GPUs!")
-        # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+            # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
         model = nn.DataParallel(model)
-        model.load_state_dict(torch.load(self.LOAD_PATH))
+        print(torch.load(self.LOAD_PATH).keys())
+        model.load_state_dict(torch.load(self.LOAD_PATH), strict=False)
         self.model = model
 
         bias_predictions = [] 
