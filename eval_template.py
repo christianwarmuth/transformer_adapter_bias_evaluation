@@ -91,11 +91,10 @@ class BiasEvaluator():
         print()
         print(
             f"{Fore.LIGHTRED_EX}Evaluating bias on intrasentence tasks...{Style.RESET_ALL}")
-        dataset = SentimentIntrasentenceLoader(self.tokenizer, max_seq_length=args.max_seq_length, pad_to_max_length=True, input_file=args.input_file)
+        dataset = SentimentIntrasentenceLoader(self.tokenizer, max_seq_length=self.max_seq_length, pad_to_max_length=True, input_file=self.input_file)
         dataloader = DataLoader(
             dataset, batch_size=self.batch_size, shuffle=False, num_workers=5)
         num_labels = 2
-        print("Arrived 0")
 
         model = utils.BertForSequenceClassification(num_labels)
         #device = torch.device("cuda" if not args.no_cuda else "cpu")
@@ -105,7 +104,6 @@ class BiasEvaluator():
         model.to(device).eval()
         if torch.cuda.device_count() > 1:
             print("Let's use", torch.cuda.device_count(), "GPUs!")
-            print("Arrived 1")
             # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
         model = nn.DataParallel(model)
         print(torch.load(self.LOAD_PATH).keys())
