@@ -50,7 +50,7 @@ nlp = spacy.load('en')
 class BiasEvaluator():
     def __init__(self, no_cuda=False, input_file=path+"dev.json", skip_intrasentence=False, 
                  skip_intersentence=False, batch_size=1, max_seq_length=128, output_dir=path+"output", 
-                 output_file=path+"output/predictions.json", load_path=path + "SentimentBert.pth"):
+                 output_file=path+"output/predictions.json", load_path=path + "models/pytorch_model.bin"):
         print(f"Loading {input_file}...")
         filename = os.path.abspath(input_file)
         self.dataloader = StereoSet(filename)
