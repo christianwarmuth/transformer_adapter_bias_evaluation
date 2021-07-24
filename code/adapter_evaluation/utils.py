@@ -76,7 +76,7 @@ class BertForSequenceClassification(nn.Module):
         self.classifier = nn.Linear(config.hidden_size, num_labels)
         nn.init.xavier_normal_(self.classifier.weight)
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None):
-        _, pooled_output = self.bert(input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask)
+        _, pooled_output = self.bert(input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask, return_dict=False) 
         pooled_output = self.dropout(pooled_output)
         logits = self.classifier(pooled_output)
 

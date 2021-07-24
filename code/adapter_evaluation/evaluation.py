@@ -25,26 +25,26 @@ import utils
 nlp = spacy.load('en')
 
 
-# def parse_args():
-#     parser = ArgumentParser()
-#     parser.add_argument("--no-cuda", default=False, action="store_true")
-#     parser.add_argument(
-#         "--input-file", default="../data/dev.json", type=str,
-#         help="Choose the dataset to evaluate on.")
-#     parser.add_argument("--output-dir", default="predictions/", type=str,
-#                         help="Choose the output directory for predictions.")
-#     parser.add_argument("--output-file", default=None, type=str,
-#                         help="Choose the name of the predictions file")
 
-#     parser.add_argument("--skip-intrasentence", help="Skip intrasentence evaluation.",
-#                         default=False, action="store_true")
-#     parser.add_argument("--load-path", default="best_models/SentimentBert.pth", type=str,
-#                         help="Load a pretrained sentiment model.")
-#     parser.add_argument("--skip-intersentence",
-#                         default=False, action="store_true", help="Skip intersentence evaluation.")
-#     parser.add_argument("--batch-size", type=int, default=1)
-#     parser.add_argument("--max-seq-length", type=int, default=128)
-#     return parser.parse_args()
+def parse_args():
+     parser = ArgumentParser()
+     parser.add_argument("--no-cuda", default=False, action="store_true")
+     parser.add_argument(
+         "--input-file", default="../data/dev.json", type=str,
+         help="Choose the dataset to evaluate on.")
+     parser.add_argument("--output-dir", default="predictions/", type=str,
+                         help="Choose the output directory for predictions.")
+     parser.add_argument("--output-file", default=None, type=str,
+                         help="Choose the name of the predictions file")
+     parser.add_argument("--skip-intrasentence", help="Skip intrasentence evaluation.",
+                         default=False, action="store_true")
+     parser.add_argument("--load-path", default="best_models/SentimentBert.pth", type=str,
+                         help="Load a pretrained sentiment model.")
+     parser.add_argument("--skip-intersentence",
+                         default=False, action="store_true", help="Skip intersentence evaluation.")
+     parser.add_argument("--batch-size", type=int, default=1)
+     parser.add_argument("--max-seq-length", type=int, default=128)
+     return parser.parse_args()
 
 
 class BiasEvaluator():
@@ -181,7 +181,7 @@ class BiasEvaluator():
 
 
 if __name__ == "__main__":
-    #args = parse_args()
+    args = parse_args()
     evaluator = BiasEvaluator(**vars(args))
     results = evaluator.evaluate()
 
