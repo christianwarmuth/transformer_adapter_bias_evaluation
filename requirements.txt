@@ -31,7 +31,7 @@ sklearn==0.0
 spacy==2.2.4
 srsly==1.0.2
 thinc==7.4.0
-torch==1.4.0
+torch==1.6.0
 tqdm==4.45.0
 urllib3==1.25.8
 wasabi==0.6.0
