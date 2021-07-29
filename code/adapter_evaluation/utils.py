@@ -68,6 +68,8 @@ class BertForSequenceClassification(nn.Module):
         super(BertForSequenceClassification, self).__init__()
         self.num_labels = num_labels
         self.bert = BertModel.from_pretrained('bert-base-uncased')
+        self.bert.load_adapter("sst-2")
+        self.bert.set_active_adapters("sst-2")
         config = BertConfig(vocab_size_or_config_json_file=32000, hidden_size=768,
         num_hidden_layers=12, num_attention_heads=12, intermediate_size=3072)
         self.config = config

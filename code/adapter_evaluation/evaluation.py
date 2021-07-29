@@ -22,6 +22,8 @@ from intersentence_loader import SentimentIntersentenceDataset
 from dataloader import SentimentIntrasentenceLoader, StereoSet
 import utils
 
+from transformers import BertModel
+
 nlp = spacy.load('en')
 
 
@@ -38,7 +40,9 @@ def parse_args():
                          help="Choose the name of the predictions file")
      parser.add_argument("--skip-intrasentence", help="Skip intrasentence evaluation.",
                          default=False, action="store_true")
-     parser.add_argument("--load-path", default="best_models/SentimentBert.pth", type=str,
+     parser.add_argument("--load-path_model", default="best_models/SentimentBert.pth", type=str,
+                         help="Load a pretrained sentiment model.")
+     parser.add_argument("--load-path_adapter", default="best_models/SentimentBert.pth", type=str,
                          help="Load a pretrained sentiment model.")
      parser.add_argument("--skip-intersentence",
                          default=False, action="store_true", help="Skip intersentence evaluation.")
@@ -50,7 +54,7 @@ def parse_args():
 class BiasEvaluator():
     def __init__(self, no_cuda=False, input_file=path+"dev.json", skip_intrasentence=False, 
                  skip_intersentence=False, batch_size=1, max_seq_length=128, output_dir=path+"output", 
-                 output_file=path+"output/predictions.json", load_path=path + "models/pytorch_model.bin"):
+                 output_file=path+"output/predictions.json", load_path_model=path + "models/pytorch_model.bin", load_path_adapter=path + "models/pytorch_model.bin"):
         print(f"Loading {input_file}...")
         filename = os.path.abspath(input_file)
         self.dataloader = StereoSet(filename)
@@ -58,7 +62,7 @@ class BiasEvaluator():
         self.device = "cuda" if self.cuda else "cpu"
         self.input_file = input_file
 
-        self.LOAD_PATH = load_path
+        self.LOAD_PATH = load_path_model
         self.SKIP_INTERSENTENCE = skip_intersentence
         self.SKIP_INTRASENTENCE = skip_intrasentence
         self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
@@ -97,6 +101,9 @@ class BiasEvaluator():
         num_labels = 2
 
         model = utils.BertForSequenceClassification(num_labels)
+        #model = BertModel.from_pretrained('bert-base-uncased')
+        #model.load_adapter("sst-2")
+
         #device = torch.device("cuda" if not args.no_cuda else "cpu")
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Number of parameters: {self.count_parameters(model):,}")
@@ -106,8 +113,9 @@ class BiasEvaluator():
             print("Let's use", torch.cuda.device_count(), "GPUs!")
             # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
         model = nn.DataParallel(model)
-        print(torch.load(self.LOAD_PATH).keys())
-        model.load_state_dict(torch.load(self.LOAD_PATH), strict=False)
+        #model.load_state_dict(torch.load(self.LOAD_PATH), strict=False)
+
+
         self.model = model
 
         
@@ -142,14 +150,19 @@ class BiasEvaluator():
         model = utils.BertForSequenceClassification(num_labels)
         #device = torch.device("cuda" if not self.cuda else "cpu")
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        #model = BertModel.from_pretrained('bert-base-uncased')
+        #model.load_adapter("sst-2")
+
         print(f"Number of parameters: {self.count_parameters(model):,}")
         model.to(device).eval()
         if torch.cuda.device_count() > 1:
             print("Let's use", torch.cuda.device_count(), "GPUs!")
             # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
         model = nn.DataParallel(model)
+
         print(torch.load(self.LOAD_PATH).keys())
-        model.load_state_dict(torch.load(self.LOAD_PATH), strict=False)
+        #model.load_state_dict(torch.load(self.LOAD_PATH), strict=False)
+        #model.load_adapter("sst-2")
         self.model = model
 
         bias_predictions = [] 
