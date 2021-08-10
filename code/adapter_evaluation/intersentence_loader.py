@@ -1,4 +1,5 @@
-from os import path 
+# copied from https://github.com/moinnadeem/StereoSet/blob/master/code/intersentence_loader.py
+from os import path
 import sys
 sys.path.append("..")
 import dataloader

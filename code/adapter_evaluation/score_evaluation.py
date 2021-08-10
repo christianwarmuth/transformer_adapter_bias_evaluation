@@ -1,3 +1,4 @@
+#taken from: #https://github.com/moinnadeem/StereoSet/blob/master/code/evaluation.py
 import os
 import json
 from glob import glob
