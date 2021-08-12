@@ -1,7 +1,7 @@
 path = "/content/gdrive/MyDrive/master_hpi/NLP_Project/code/"
 
 ####################
-# Copied from StereoSet: https://github.com/christianwarmuth/transformer_adapter_bias_evaluation/blob/main/code/adapter_evaluation/evaluation.py
+# Copied from StereoSet: https://github.com/moinnadeem/StereoSet/blob/master/code/eval_sentiment_models.py
 ####################
 
 import sys
