@@ -3,7 +3,7 @@
 Link-Sammlung:
 
 GDrive Folder: 
-- https://drive.google.com/drive/folders/15gJIr4tILXKQtJ7snHVw09gSNDOLHozQ?usp=sharing
+-https://drive.google.com/drive/folders/1RCD7zCePgE2bbVG7rKuPf-QTQTiX2aCY
 
 - Adapter-Hub:
     - https://colab.research.google.com/github/Adapter-Hub/adapter-transformers/blob/master/notebooks/03_Adapter_Fusion.ipynb#scrollTo=jRqbBgS0BoHJ
@@ -24,18 +24,9 @@ GDrive Folder:
     - https://github.com/Trusted-AI/AIF360
     - [Closing the AI accountability gap: defining an end-to-end framework for internal algorithmic auditing](https://dl.acm.org/doi/abs/10.1145/3351095.3372873)
     - http://stereotropes.bocoup.com/gender
-    - [FairTest: Discovering Unwarranted Associations in Data-Driven Applications](https://ieeexplore.ieee.org/document/7961993)
 
 
 
 
-adapters to test:
-- [x] SST 
-- [ ] https://adapterhub.ml/explore/comsense/winogrande/
-- [ ] https://adapterhub.ml/explore/argument/ukpsent/
-- [ ] https://adapterhub.ml/explore/comsense/siqa/
-- [ ] https://adapterhub.ml/explore/lm/poem/
-- [ ] https://adapterhub.ml/explore/nli/cb/
-- [ ] https://adapterhub.ml/explore/nli/multinli/
-- [ ] https://adapterhub.ml/explore/pos/ldc2012t13/
+
 
