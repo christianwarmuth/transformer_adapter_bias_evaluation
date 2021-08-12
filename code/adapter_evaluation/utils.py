@@ -1,3 +1,4 @@
+# https://github.com/moinnadeem/StereoSet/blob/master/code/utils.py
 from __future__ import division, print_function
 
 from random import randrange
